@@ -175,6 +175,8 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                 containerClass: 'theme-dark-blue datepicker-container-wrap',
                 showWeekNumbers: false,
                 dateInputFormat: 'DD MMM YYYY',
+                isAnimated: true,
+                adaptivePosition: true
             }
         );
     }
@@ -188,9 +190,9 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
      * Validates filter form
      */
     validateFilter() {
-        this.formValid = false;
-        this.error = false;
         this.filterForm.valueChanges.subscribe(change => {
+            this.formValid = false;
+            this.error = false;
             var from = change.from;
             var to = change.to;
             if (from != null && to != null) {
@@ -211,6 +213,7 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                 this.error = false;
             }
         });
+
     }
 
     /**
@@ -226,14 +229,19 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
         }
 
         var formData = {
+            'fund_id': this.fundID,
             'from': this.convertToDate(this.f.from.value),
-            'to': this.convertToDate(this.f.from.value)
+            'to': this.convertToDate(this.f.to.value)
         };
+
+        console.log(formData);
 
         // Start loading
         this.loading = true;
 
         this.loading = false;
+
+        this.submitted = false;
     }
     //Ends here
 
