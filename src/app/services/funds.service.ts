@@ -35,13 +35,11 @@ export class FundsService {
     return this.http
       .get(this.url.get('dailyfunds'))
       .pipe(
-        map((res) => {
-          return res.data;
-        }),
-        map((data) => {
+        map((r: any) => r = r.data),
+        map((r: any) => {
           return {
-            funds: data.funds,
-            date: moment(data.date).format('DD MMM YYYY')
+            funds: r.funds,
+            date: moment(r.date).format('DD MMM YYYY')
           };
         }),
         catchError(this.handleErrorObservable)
