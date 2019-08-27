@@ -1,0 +1,23 @@
+<nav class="main-nav pt-1 pb-2">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12">
+				<div class="pull-left">
+					<ul class="list-inline mb-0">
+						<li class="list-inline-item"><a [routerLink]="['/']">Home</a></li>
+						<li class="list-inline-item"><a [routerLink]="['/']">Funds Facts Sheet</a></li>
+					</ul>
+				</div>
+				<div class="pull-right">
+					<ul class="list-inline mb-0">
+						<li class="list-inline-item"><a href="#">Newsletter</a></li>
+						<li class="list-inline-item" *ngIf="_auth.isLoggedIn()"><a [routerLink]="['/dashboard']">Dashboard</a></li>
+						<li class="list-inline-item" *ngIf="!_auth.isLoggedIn()"><a [routerLink]="['/login']">Login</a></li>
+						<li class="list-inline-item" *ngIf="_auth.isLoggedIn()"><a href="#" (click)="logout($event)">Logout</a></li>
+					</ul>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</nav>
