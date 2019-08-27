@@ -9,7 +9,7 @@ import { FundsService } from 'src/app/services';
 
 export class HomeComponent implements OnInit {
 
-  data = [];
+  data: any = [];
   error: any;
 
   constructor(private dfs: FundsService) { }
