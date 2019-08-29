@@ -6,9 +6,13 @@ import { environment } from 'src/environments/environment';
 })
 
 export class UrlService {
+  // define private variables
   private urls: any;
   private base: string = `${environment.api}`
 
+  /**
+   * Class constructor
+   */
   constructor() {
     this.urls = {
       'login': 'auth/login',
@@ -22,20 +26,28 @@ export class UrlService {
     };
   }
 
+  /**
+   * Returns api path 
+   * 
+   * @param slug
+   * @param param 
+   */
   get(slug: string = '', param?: any) {
     var url = this.base;
     var join = '/';
 
+    // return base url if slug is empty
     if (slug == '') return url;
 
+    // Check slug is valid or not
     if (slug in this.urls) {
       url += join + this.urls[slug];
+      // if any paramater is passed then append on last
       if (param) {
         url += join + param;
       }
-      return url;
     }
-    
+
     return url;
   }
 }

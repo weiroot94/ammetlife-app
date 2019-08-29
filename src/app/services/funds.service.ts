@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import * as moment from 'moment';
 
@@ -18,11 +18,18 @@ export class FundsService {
         private url: UrlService
     ) { }
 
+    /**
+     * Handles Observable error
+     * @param error
+     */
     private handleErrorObservable(error: HttpErrorResponse | any) {
         console.error(error.message || error);
-        return Observable.throw(error.message || error);
+        return throwError(error.message || error);
     }
 
+    /**
+     * Dailly funds callback
+     */
     getDailyFunds(): Observable<any> {
         return this.http
             .get(this.url.get('dailyfunds'))
@@ -45,6 +52,10 @@ export class FundsService {
             );
     }
 
+    /**
+     * Fund details callback
+     * @param fund_id 
+     */
     getFundDetails(fund_id: any): Observable<any> {
         return this.http
             .get(this.url.get('fund', fund_id))
@@ -62,6 +73,9 @@ export class FundsService {
             );
     }
 
+    /**
+     * Funds list callback
+     */
     getFundList(): Observable<any> {
         return this.http
             .get(this.url.get('fundslist'))
@@ -79,14 +93,21 @@ export class FundsService {
             );
     }
 
+    /**
+     * Chart Data Callback
+     * @param filter
+     */
     getChartData(filter: any): Observable<any> {
         return this.http
             .post(this.url.get('chartdata'), filter)
             .pipe(
                 map((res: any) => res = res.data),
                 map((res: any) => {
-                    res.map = res.map.map((map: any) => [moment.utc(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))])
-                    return res;
+                    if (res == null) {
+                        return res;
+                    } else {
+                        return res.map((map: any) => [moment.utc(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))]);
+                    }
                 }),
                 catchError(this.handleErrorObservable)
             );

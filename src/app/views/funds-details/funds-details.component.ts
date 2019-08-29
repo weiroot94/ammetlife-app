@@ -1,10 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Chart } from 'angular-highcharts';
-import { FundsService } from 'src/app/services';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
+import { DOCUMENT } from '@angular/common';
 import * as moment from 'moment';
+
+import { FundsService } from 'src/app/services';
+import * as Highcharts from 'highcharts';
 
 @Component({
     selector: 'app-funds-details',
@@ -25,10 +29,12 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
     // Chart Variables
     chart: Chart;
     chartOptions: any;
+    chartData: any;
 
     // Datepicker Variables
     datepickerConfig: Partial<BsDatepickerConfig>;
     minDate: Date;
+    maxDate: Date;
 
     // Form Variables
     filterForm: FormGroup;
@@ -43,7 +49,8 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
         private AR: ActivatedRoute,
         private FS: FundsService,
         private router: Router,
-        private FB: FormBuilder
+        private FB: FormBuilder,
+        @Inject(DOCUMENT) private document: Document
     ) {
         // Get fund id from route
         this.fundSubscribe = this.AR.paramMap.subscribe(params => {
@@ -115,20 +122,31 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
      * Sets chart config options
      */
     setChartOptions() {
+
         this.chartOptions = {
+
+            legend: {
+                enabled: false
+            },
+            credits: {
+                enabled: false
+            },
             title: {
-                text: 'Monthly Average Temperature'
+                text: 'Change Chart Title Later'
             },
             subtitle: {
-                text: 'Source: WorldClimate.com'
+                text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+            },
+            chart: {
+                zoomType: 'x'
             },
             xAxis: {
                 type: 'datetime',
                 dateTimeLabelFormats: {
-                    day: "%e %b %Y",
-                    week: "%b %e, %Y",
-                    month: "%b %Y",
-                    year: "%b %Y",
+                    day: '%b %e,\'%y',
+                    week: '%b %e \'%y',
+                    month: '%b %Y',
+                    year: '%Y'
                 }
             },
             yAxis: {
@@ -136,18 +154,38 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                     text: 'Price(RM)'
                 }
             },
-            legend: {
-                enabled: false
-            },
-            credits: {
-                enabled: false
-            },
             tooltip: {
                 xDateFormat: '%a, %e %b %Y'
             },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, new Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
             series: [{
                 name: 'Fund Price',
-                data: this.fundDetails.map,
+                data: this.chartData,
                 type: 'area'
             }]
         };
@@ -176,7 +214,9 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                 showWeekNumbers: false,
                 dateInputFormat: 'DD MMM YYYY',
                 isAnimated: true,
-                adaptivePosition: true
+                adaptivePosition: true,
+                minDate: this.minDate,
+                maxDate: this.maxDate,
             }
         );
     }
@@ -220,8 +260,6 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
      * Filter submit callback function
      */
     onFilterSubmit() {
-        this.submitted = true;
-
         // stop here if form is invalid
         if (!this.formValid) {
             this.submitted = false;
@@ -234,14 +272,29 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
             'to': this.convertToDate(this.f.to.value)
         };
 
-        console.log(formData);
-
-        // Start loading
+        // Start loading && enable submitted
+        this.submitted = true;
         this.loading = true;
-
-        this.loading = false;
-
-        this.submitted = false;
+        this.FS.getChartData(formData)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                    this.submitted = false;
+                })
+            )
+            .subscribe(
+                res => {
+                    this.chartData = res;
+                    this.chart = null;
+                    // Set chart config options
+                    this.setChartOptions();
+                    // Initialize chart
+                    this.initChart();
+                },
+                err => {
+                    console.log(err);
+                }
+            );
     }
     //Ends here
 
@@ -258,8 +311,18 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                 res => {
                     if (res) {
                         this.fundDetails = res;
+                        if (this.fundDetails.min_date != null) {
+                            this.minDate = new Date(this.fundDetails.min_date);
+                        }
+                        if (this.fundDetails.max_date != null) {
+                            this.maxDate = new Date(this.fundDetails.max_date);
+                        }
+                        this.chartData = this.fundDetails.map;
+                        // Set chart config options
                         this.setChartOptions();
+                        // Initialize chart
                         this.initChart();
+                        // Set date picker config
                         this.setDatesConfig();
                     } else {
                         this.redirect();
