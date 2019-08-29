@@ -18,6 +18,7 @@ export class UrlService {
       'dailyfunds': 'daily-funds',
       'fundslist': 'funds-list',
       'fund': 'fund-details',
+      'chartdata': 'chart-data',
     };
   }
 

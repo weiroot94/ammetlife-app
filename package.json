@@ -30,6 +30,7 @@
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
     "ng-http-loader": "^6.0.1",
+    "ngx-bootstrap": "^5.1.1",
     "popper.js": "^1.15.0",
     "rxjs": "~6.5.2",
     "simple-crypto-js": "^2.2.0",

@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
     this.dfs.getDailyFunds()
       .subscribe(
         res => {
-          this.data = res ? res : null;
+          this.data = res ? res : [];
         },
         error => this.error = <any>error
       );

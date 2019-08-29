@@ -6,6 +6,8 @@ import { ChartModule } from 'angular-highcharts';
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
 import { NgHttpLoaderModule } from 'ng-http-loader'; 
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -46,7 +48,9 @@ import {
     FormsModule,
     NgProgressModule,
     NgProgressHttpModule,
+    BrowserAnimationsModule,
     NgHttpLoaderModule.forRoot(),
+    BsDatepickerModule.forRoot(),
   ],
   providers: [
     AuthService,

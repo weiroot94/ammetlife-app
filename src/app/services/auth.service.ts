@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router, RouterEvent, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { map, first, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import SimpleCrypto from "simple-crypto-js";
 
 @Injectable({
@@ -16,28 +16,18 @@ export class AuthService {
   private _secretKey = "x9$lPGl1BWdQfVLpQd@J8r*ylY#1wu9j6OpXO7tEnM";
   private simpleCrypto: any;
 
-  public currentUser: any = false;
-
   constructor(
     private http: HttpClient,
-    private _router: Router,
   ) {
     this.simpleCrypto = new SimpleCrypto(this._secretKey);
-    /* this._router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.refreshUser();
-    }); */
   }
 
   private setSession(authResult: any) {
     localStorage.setItem('userToken', this.simpleCrypto.encrypt(authResult.data.token));
-    this.currentUser = authResult.data.token;
   }
 
   private deleteSession() {
     localStorage.removeItem("userToken");
-    this.currentUser = false;
   }
 
   public getToken() {
@@ -46,7 +36,7 @@ export class AuthService {
   }
 
   public isLoggedIn() {
-    if (this.getToken() && this.currentUser !== null) {
+    if (this.getToken()) {
       return true;
     } else {
       this.logout();
@@ -54,13 +44,12 @@ export class AuthService {
     }
   }
 
-  public login(user) {
+  public login(user: any) {
     return this.http.post<any>(this._loginUrl, user)
       .pipe(
         map(
           res => {
             this.setSession(res);
-            return res;
           }
         )
       );
@@ -72,20 +61,5 @@ export class AuthService {
 
   public GetUser() {
     return this.http.get<any>(this._userUrl);
-  }
-
-  refreshUser() {
-    if (!this.isLoggedIn()) {
-      return;
-    }
-    return this.GetUser()
-      .subscribe(
-        res => {
-          this.currentUser = res.data;
-        },
-        err => {
-          console.log(err)
-        }
-      );
   }
 }
