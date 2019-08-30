@@ -1,26 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services';
 import { Router } from '@angular/router';
-import { first } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styles: []
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styles: []
 })
+
 export class HeaderComponent implements OnInit {
 
-  constructor(
-    public _auth: AuthService,
-    private _router: Router
-  ) {}
+    constructor(
+        public auth: AuthService,
+        private router: Router
+    ) { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
-  logout(event: any) {
-    event.preventDefault();
-    this._auth.logout();
-    this._router.navigate(["/login"]);
-  }
+    logout(event: any) {
+        event.preventDefault();
+        this.auth.logout();
+        this.router.navigate(["/login"]);
+    }
 }

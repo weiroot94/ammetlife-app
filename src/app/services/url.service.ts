@@ -18,11 +18,12 @@ export class UrlService {
       'login': 'auth/login',
       'user': 'auth/user',
       'upload': 'uplaod-funds',
-      'dailyfundslist': 'view-daily-funds',
       'dailyfunds': 'daily-funds',
       'fundslist': 'funds-list',
       'fund': 'fund-details',
       'chartdata': 'chart-data',
+      'alldailyfunds': 'all-daily-funds',
+      'allfunds': 'all-funds',
     };
   }
 

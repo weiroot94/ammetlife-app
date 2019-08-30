@@ -38,15 +38,14 @@ export class FundsService {
                 map((res: any) => {
                     return {
                         date: moment.utc(res.date).format('DD MMM YYYY'),
-                        funds: res.funds,
+                        funds: res.funds.map((data: any) => {
+                            return {
+                                id: data.fund_id,
+                                name: data.name,
+                                price: data.price.toFixed(4)
+                            }
+                        }),
                     };
-                }),
-                map((r: any) => {
-                    r.funds = r.funds.map((data: any) => {
-                        data.price = data.price.toFixed(4);
-                        return data;
-                    })
-                    return r;
                 }),
                 catchError(this.handleErrorObservable)
             );
@@ -62,12 +61,13 @@ export class FundsService {
             .pipe(
                 map((res: any) => res = res.data),
                 map((res: any) => {
-                    res.as_at = moment.utc(res.as_at).format('DD MMM YYYY');
-                    res.price = res.price.toFixed(4);
-                    res.price_change = res.price_change.toFixed(4);
-                    res.price_change = res.price_change > 0 ? '+' + res.price_change : res.price_change;
-                    res.map = res.map.map((map: any) => [moment.utc(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))])
-                    return res;
+                    return {
+                        description: res.description,
+                        as_at: moment.utc(res.as_at).format('DD MMM YYYY'),
+                        price: res.price.toFixed(4),
+                        price_change: res.price_change > 0 ? '+' + res.price_change.toFixed(4) : res.price_change.toFixed(4),
+                        map: res.map.map((map: any) => [moment.utc(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))]),
+                    }
                 }),
                 catchError(this.handleErrorObservable)
             );
@@ -111,5 +111,67 @@ export class FundsService {
                 }),
                 catchError(this.handleErrorObservable)
             );
+    }
+
+    /**
+     * All Daily Funds calllback
+     * @param params
+     */
+    getAllDailyFunds(params: any): Observable<any> {
+        return this.http
+            .post(this.url.get('alldailyfunds'), params)
+            .pipe(
+                map((res: any) => res = res.data),
+                map((res: any) => {
+                    res.items = res.items.map((data: any) => {
+                        return {
+                            id: data.id,
+                            name: data.name,
+                            as_at: moment.utc(data.as_at).format('DD MMM YYYY'),
+                            price: parseFloat(data.price.toFixed(4)),
+                        }
+                    })
+                    return res;
+                }),
+                catchError(this.handleErrorObservable)
+            );
+    }
+
+    /**
+    * All Daily Funds calllback
+    * @param params
+    */
+    getAllFunds(params: any): Observable<any> {
+        return this.http
+            .post(this.url.get('allfunds'), params)
+            .pipe(
+                map((res: any) => res = res.data),
+                map((res: any) => {
+                    res.items = res.items.map((data: any) => {
+                        return {
+                            id: data.id,
+                            name: data.name,
+                            description: this.shorten(data.description, 10),
+                        }
+                    })
+                    return res;
+                }),
+                catchError(this.handleErrorObservable)
+            );
+    }
+
+    shorten(str: string, maxLen: number, separator: any = ' ') {
+        var index = this.nthIndex(str, separator, maxLen);
+        if (str.length <= index) return str;
+        return str.substr(0, index) + '...';
+    }
+
+    nthIndex(str: string, pat: any, n: number) {
+        var L = str.length, i = -1;
+        while (n-- && i++ < L) {
+            i = str.indexOf(pat, i);
+            if (i < 0) break;
+        }
+        return i;
     }
 }      

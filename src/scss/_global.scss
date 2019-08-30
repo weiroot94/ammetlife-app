@@ -37,11 +37,19 @@ h4 {
   border-radius: 0;
   outline: 0 !important;
   box-shadow: none !important;
-  min-width: 120px;
   text-align: center;
 }
 
+button.btn {
+  min-width: 120px;
+}
+
+a.btn {
+  cursor: pointer;
+}
+
 .btn-primary,
+.btn-primary:not([href]):not([tabindex]),
 .btn-primary.disabled,
 .btn-primary:disabled {
   color: $white;
@@ -54,10 +62,12 @@ h4 {
   cursor: not-allowed;
 }
 
+.btn-primary:not([href]):not([tabindex]):hover,
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
 .btn-primary:focus:active {
+  color: $white;
   background-color: $blue;
   border-color: $blue;
 }
@@ -112,4 +122,17 @@ h4 {
 
 .funds-filters label {
   margin-bottom: 3px;
+}
+
+.pagination a.page-link {
+  cursor: pointer;
+}
+
+.pagination .page-link {
+  color: $blue;
+}
+
+.pagination .page-item.active .page-link {
+  background: $light-blue;
+  color: $white;
 }
