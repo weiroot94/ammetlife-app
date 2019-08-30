@@ -41,9 +41,17 @@ h4 {
   text-align: center;
 }
 
-.btn-primary {
+.btn-primary,
+.btn-primary.disabled,
+.btn-primary:disabled {
+  color: $white;
   background-color: $light-blue;
   border-color: $light-blue;
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+  cursor: not-allowed;
 }
 
 .btn-primary:hover,
@@ -63,6 +71,10 @@ h4 {
 .datepicker-form-control {
   background-color: transparent !important;
   cursor: pointer;
+}
+
+.datepicker-container-wrap {
+  box-shadow: 0 0 2px 0 rgba(170, 170, 170, 0.6);
 }
 
 .datepicker-container-wrap .bs-datepicker-container {
@@ -87,6 +99,7 @@ h4 {
   line-height: 1.4;
   margin-top: 0;
   margin-bottom: 0.5rem;
+  word-break: break-word;
 }
 
 .page-header .heading-tagline {

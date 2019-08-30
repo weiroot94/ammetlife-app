@@ -2,13 +2,13 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12">
-				<div class="pull-left">
+				<div class="float-left">
 					<ul class="list-inline mb-0">
 						<li class="list-inline-item"><a [routerLink]="['/']">Home</a></li>
 						<li class="list-inline-item"><a [routerLink]="['/']">Funds Facts Sheet</a></li>
 					</ul>
 				</div>
-				<div class="pull-right">
+				<div class="float-right">
 					<ul class="list-inline mb-0">
 						<li class="list-inline-item"><a href="#">Newsletter</a></li>
 						<li class="list-inline-item" *ngIf="_auth.isLoggedIn()"><a [routerLink]="['/dashboard']">Dashboard</a></li>

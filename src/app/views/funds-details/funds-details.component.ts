@@ -110,6 +110,7 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
      */
     onFundDropDownChange(value: any) {
         this.router.navigate(['/details', value]);
+        this.filterForm.reset();
         this.loadFundDetails();
     }
     //Ends here
@@ -122,9 +123,7 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
      * Sets chart config options
      */
     setChartOptions() {
-
         this.chartOptions = {
-
             legend: {
                 enabled: false
             },
@@ -132,27 +131,55 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                 enabled: false
             },
             title: {
-                text: 'Change Chart Title Later'
+                text: 'Change Chart Title Later',
+                style: {
+                    color: "#FFFFFF",
+                }
             },
             subtitle: {
-                text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in',
+                style: {
+                    color: "#FFFFFF",
+                }
             },
             chart: {
-                zoomType: 'x'
+                zoomType: 'x',
+                panning: true,
+                panKey: 'shift',
+                backgroundColor: "#0061a0",
             },
             xAxis: {
+                ordinal: false,
                 type: 'datetime',
                 dateTimeLabelFormats: {
-                    day: '%b %e,\'%y',
-                    week: '%b %e \'%y',
+                    day: '%e %b, %y',
+                    week: '%b %e',
                     month: '%b %Y',
                     year: '%Y'
-                }
+                },
+                labels: {
+                    style: {
+                        color: '#FFFFFF'
+                    }
+                },
+                gridLineColor: 'rgba(255,255,255,0.2)',
+                lineColor: 'rgba(255,255,255,0.2)',
+                minorGridLineColor: 'rgba(255,255,255,0.2)',
+                tickColor: 'rgba(255,255,255,0.2)',
             },
             yAxis: {
                 title: {
-                    text: 'Price(RM)'
-                }
+                    text: null,
+                },
+                labels: {
+                    style: {
+                        color: '#FFFFFF'
+                    }
+                },
+                gridLineColor: 'rgba(255,255,255,0.2)',
+                lineColor: 'rgba(255,255,255,0.2)',
+                minorGridLineColor: 'rgba(255,255,255,0.2)',
+                tickColor: 'rgba(255,255,255,0.2)',
             },
             tooltip: {
                 xDateFormat: '%a, %e %b %Y'
@@ -167,12 +194,21 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                             y2: 1
                         },
                         stops: [
-                            [0, Highcharts.getOptions().colors[0]],
-                            [1, new Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                            [0, "rgba(255, 255, 255, 0.2)"],
+                            [1, "rgba(255, 255, 255, 0)"]
                         ]
                     },
                     marker: {
-                        radius: 2
+                        enabled: true,
+                        radius: 2,
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 2,
+                                lineColor: "#FFFFFF",
+                                fillColor: '#FF0000',
+                            }
+                        }
                     },
                     lineWidth: 1,
                     states: {
@@ -184,9 +220,10 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                 }
             },
             series: [{
+                type: 'area',
                 name: 'Fund Price',
                 data: this.chartData,
-                type: 'area'
+                color: "#FFFFFF",
             }]
         };
     }
@@ -237,7 +274,7 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
             var to = change.to;
             if (from != null && to != null) {
                 if (moment(to).diff(moment(from)) < 0) {
-                    this.f.to.setValue('');
+                    this.f.to.setValue(null);
                     this.error = false;
                     this.error = "To date cannot be greater than From date.";
                     this.formValid = false;
