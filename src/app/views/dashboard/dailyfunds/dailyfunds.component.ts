@@ -26,6 +26,7 @@ export class DailyfundsComponent implements OnInit {
     // Datepicker Variables
     datepickerConfig: Partial<BsDatepickerConfig>;
 
+    loading: boolean = false;
     /**
      * Class constructor
      * 
@@ -78,7 +79,14 @@ export class DailyfundsComponent implements OnInit {
             date: date == '' || date == null ? '' : moment.utc(date).format('YYYY-MM-DD'),
         };
 
+        this.loading = true;
+        
         this.FS.getAllDailyFunds(params)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                })
+            )
             .subscribe(
                 res => {
                     this.funds = res.items;
