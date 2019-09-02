@@ -12,9 +12,11 @@ export class JwtInterceptor implements HttpInterceptor {
     intercept(req: any, next: any) {
         let tokenizedReq = req.clone({
             setHeaders: {
+                Accept: 'application/json, text/plain',
                 Authorization: `Bearer ${this.auth.getToken()}`
             }
         });
+        console.log(tokenizedReq);
         return next.handle(tokenizedReq);
     }
 }
