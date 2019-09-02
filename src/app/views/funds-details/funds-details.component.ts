@@ -8,7 +8,6 @@ import { DOCUMENT } from '@angular/common';
 import * as moment from 'moment';
 
 import { FundsService } from 'src/app/services';
-import * as Highcharts from 'highcharts';
 
 @Component({
     selector: 'app-funds-details',

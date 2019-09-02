@@ -19,11 +19,8 @@
                                 <div *ngIf="f.password.errors.required">Password is required</div>
                             </div>
                         </div>
-                        <button [disabled]="loading || loginForm.invalid" class="btn btn-success">
-                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                            Login
-                        </button>
-                        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                        <button [disabled]="loading || loginForm.invalid" class="btn btn-success">Login</button>
+                        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{ error }}</div>
                     </form>
                 </div>
             </div>

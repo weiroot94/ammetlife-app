@@ -6,20 +6,21 @@
                 <div class="fund-types-table">
                     <table class="table table-bordered">
                         <thead>
-                            <tr class="light-blue-bg white-text text-center">
-                                <th class="text-left">Fund Name</th>
+                            <tr class="light-blue-bg white-text">
+                                <th>Fund Name</th>
                                 <th>Description</th>
-                                <th>Actions</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let fund of funds | paginate: { id: 'fundtypes', itemsPerPage: perPage, currentPage: page, totalItems: total }">
                                 <td>{{ fund.name }}</td>
-                                <td class="text-center">{{ fund.description }}</td>
-                                <td class="text-center"><a class="btn btn-sm btn-primary">Edit</a></td>
+                                <td><span tooltip="{{ fund.description }}">{{ fund.short_desc }}</span></td>
+                                <td class="text-center"><a href="#" (click)="fundEdit( $event, fund, template )">Edit Details</a></td>
                             </tr>
                         </tbody>
                     </table>
+
                     <div class="pagination-wrapper" *ngIf="funds">
                         <pagination-template id="fundtypes" #p="paginationApi" (pageChange)="getPage($event)">
                             <ul class="pagination justify-content-center">
@@ -45,3 +46,35 @@
         </div>
     </div>
 </div>
+
+<ng-template #template>
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+        <h5 class="modal-title">Edit Fund</h5>
+        <button type="button" class="close" (click)="modalRef.hide()">&times;</button>
+    </div>
+
+    <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="form-group">
+                        <label for="description" class="font-weight-bold">Fund Name</label>
+                        <input type="text" formControlName="name" class="form-control" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="font-weight-bold">Description</label>
+                        <textarea formControlName="description" class="form-control" rows="5"></textarea>
+                    </div>
+                    <div *ngIf="error" class="alert alert-danger mb-0">{{ error }}</div>
+                    <div *ngIf="success" class="alert alert-success mb-0">Fund updated successfully.</div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button [disabled]="submitted || loading" class="btn btn-success" type="submit">Update</button>
+        </div>
+    </form>
+</ng-template>

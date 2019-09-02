@@ -11,9 +11,9 @@
                 <div class="float-right">
                     <ul class="list-inline mb-0">
                         <li class="list-inline-item"><a href="#">Newsletter</a></li>
-                        <li class="list-inline-item" *ngIf="_auth.isLoggedIn()"><a [routerLink]="['/dashboard']">Dashboard</a></li>
-                        <li class="list-inline-item" *ngIf="!_auth.isLoggedIn()"><a [routerLink]="['/login']">Login</a></li>
-                        <li class="list-inline-item" *ngIf="_auth.isLoggedIn()"><a href="#" (click)="logout($event)">Logout</a></li>
+                        <li class="list-inline-item" *ngIf="isAuthorized()"><a [routerLink]="['/dashboard']">Dashboard</a></li>
+                        <li class="list-inline-item" *ngIf="!isAuthorized()"><a [routerLink]="['/login']">Login</a></li>
+                        <li class="list-inline-item" *ngIf="isAuthorized()"><a href="#" (click)="logout($event)">Logout</a></li>
                     </ul>
                 </div>
                 <div class="clearfix"></div>

@@ -13,32 +13,45 @@ import { AuthService } from 'src/app/services';
 
 export class LoginComponent implements OnInit {
 
-    loginForm: FormGroup;
-
+    // Define variables
     loading: boolean = false;
     submitted: boolean = false;
     returnUrl: string;
     error: any = '';
 
+    // Define form 
+    loginForm: FormGroup;
+
+    /**
+     * Class constructor
+     * 
+     * @param FB 
+     * @param auth 
+     * @param router 
+     * @param route 
+     */
     constructor(
-        private _fB: FormBuilder,
+        private FB: FormBuilder,
         private auth: AuthService,
-        private _router: Router,
-        private _route: ActivatedRoute,
+        private router: Router,
+        private route: ActivatedRoute,
     ) { }
 
+    /**
+     * OnInit callback
+     */
     ngOnInit() {
-        this.loginForm = this._fB.group({
+        this.loginForm = this.FB.group({
             username: ['', Validators.required],
             password: ['', Validators.required]
         });
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/dashboard';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
 
         // redirect to home if already logged in
         if (this.auth.isLoggedIn()) {
-            this._router.navigate(['/dashboard']);
+            this.router.navigate(['/dashboard']);
         }
     }
 
@@ -47,6 +60,9 @@ export class LoginComponent implements OnInit {
         return this.loginForm.controls;
     }
 
+    /**
+     * Form submit callback
+     */
     onSubmit() {
 
         this.submitted = true;
@@ -58,14 +74,17 @@ export class LoginComponent implements OnInit {
 
         this.loading = true;
 
-        this.auth.login({ 'email': this.f.username.value, 'password': this.f.password.value })
-            .pipe(first())
+        this.auth.login(
+            {
+                'email': this.f.username.value,
+                'password': this.f.password.value
+            }
+        ).pipe(first())
             .subscribe(
-                data => {
-                    this._router.navigate([this.returnUrl]);
-                },
-                error => {
-                    this.error = error;
+                () => {
+                    this.router.navigate([this.returnUrl]);
+                }, err => {
+                    this.error = err;
                     this.loading = false;
                 }
             );

@@ -1,41 +1,126 @@
 import { Component, OnInit } from '@angular/core';
-import { FundsService } from 'src/app/services';
 import { Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { FundsService } from 'src/app/services';
+import { FormControl } from '@angular/forms';
+import * as moment from 'moment';
+import { finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'app-dailyfunds',
     templateUrl: './dailyfunds.component.html',
-    styleUrls: ['./dailyfunds.component.scss'],
 })
+
 export class DailyfundsComponent implements OnInit {
     // Define variables
     page: number = 1;
-    perPage: number = 15;
     total: number;
 
+    perPage = new FormControl(15);
+    fundType = new FormControl('');
+    date = new FormControl('');
+
+    fundLists: any;
     funds: any;
 
-    constructor(
-        private router: Router,
-        private FB: FundsService
-    ) { }
+    // Datepicker Variables
+    datepickerConfig: Partial<BsDatepickerConfig>;
 
+    /**
+     * Class constructor
+     * 
+     * @param router
+     * @param FS 
+     */
+    constructor(private router: Router, private FS: FundsService) { }
+
+    /**
+     * Sets datepicker config
+     */
+    setDatepickerConfig() {
+        this.datepickerConfig = Object.assign({},
+            {
+                containerClass: 'theme-dark-blue datepicker-container-wrap',
+                showWeekNumbers: false,
+                dateInputFormat: 'DD MMM YYYY',
+                isAnimated: true,
+                adaptivePosition: true,
+            }
+        );
+    }
+
+    /**
+    * Loads all funds list into dropdown
+    */
+    loadFundsList() {
+        this.FS.getFundList()
+            .subscribe(
+                res => {
+                    this.fundLists = res;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+
+    /**
+     * Loads current page data
+     * 
+     * @param page 
+     */
     getPage(page: number) {
-        this.FB.getAllDailyFunds({ offset: page - 1, per_page: this.perPage, })
+        var date = this.date.value;
+        var params = {
+            offset: page - 1,
+            per_page: this.perPage.value,
+            fund: this.fundType.value == '' ? '' : parseInt(this.fundType.value),
+            date: date == '' || date == null ? '' : moment.utc(date).format('YYYY-MM-DD'),
+        };
+
+        this.FS.getAllDailyFunds(params)
             .subscribe(
                 res => {
                     this.funds = res.items;
                     this.total = res.total;
                     this.page = page;
                 },
-                err => {
+                () => {
                     this.router.navigate(['/dashboard']);
                 }
             )
     }
 
-    ngOnInit() {
-        this.getPage(1);
+    /**
+     * Values changes callback
+     */
+    onChange() {
+        this.date.valueChanges.subscribe(() => this.getPage(1));
+        this.fundType.valueChanges.subscribe(() => this.getPage(1));
+        this.perPage.valueChanges.subscribe(() => this.getPage(this.page));
     }
 
+    /**
+     * Clears date field
+     */
+    clearDate() {
+        if (this.date.value != '' && this.date.value != null) {
+            this.date.reset();
+        }
+        return;
+    }
+
+    /**
+     * OnInit callback
+     */
+    ngOnInit() {
+        this.loadFundsList();
+        this.setDatepickerConfig();
+        this.getPage(1);
+        this.onChange();
+    }
+
+    getRowSpan(date: string) {
+        return this.funds.filter((obj: any) => obj.as_at === date).length;
+    }
 }

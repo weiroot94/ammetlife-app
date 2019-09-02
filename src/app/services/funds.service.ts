@@ -129,6 +129,7 @@ export class FundsService {
                             name: data.name,
                             as_at: moment.utc(data.as_at).format('DD MMM YYYY'),
                             price: parseFloat(data.price.toFixed(4)),
+                            status: data.status
                         }
                     })
                     return res;
@@ -151,7 +152,8 @@ export class FundsService {
                         return {
                             id: data.id,
                             name: data.name,
-                            description: this.shorten(data.description, 10),
+                            short_desc: this.shorten(data.description, 12),
+                            description: data.description,
                         }
                     })
                     return res;
@@ -160,12 +162,27 @@ export class FundsService {
             );
     }
 
+    /**
+     * Short the string by words
+     * 
+     * @param str 
+     * @param maxLen 
+     * @param separator 
+     */
     shorten(str: string, maxLen: number, separator: any = ' ') {
         var index = this.nthIndex(str, separator, maxLen);
+        if (index <= 0 || str.length <= 0) return str;
         if (str.length <= index) return str;
         return str.substr(0, index) + '...';
     }
 
+    /**
+     * Finds nth index ot pattern
+     * 
+     * @param str 
+     * @param pat 
+     * @param n 
+     */
     nthIndex(str: string, pat: any, n: number) {
         var L = str.length, i = -1;
         while (n-- && i++ < L) {
@@ -173,5 +190,19 @@ export class FundsService {
             if (i < 0) break;
         }
         return i;
+    }
+
+    /**
+     * Update fund details
+     * 
+     * @param params 
+     */
+    updateFund(params: any): Observable<any> {
+        return this.http
+            .post(this.url.get('updatefund'), params)
+            .pipe(
+                map((res: any) => res = res.data),
+                catchError(this.handleErrorObservable)
+            );
     }
 }      

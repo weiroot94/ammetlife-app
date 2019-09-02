@@ -34,14 +34,18 @@ h4 {
 }
 
 .btn {
-  border-radius: 0;
   outline: 0 !important;
   box-shadow: none !important;
   text-align: center;
 }
 
 button.btn {
-  min-width: 120px;
+  width: 120px;
+  max-width: 100%;
+}
+
+button.btn.btn-auto {
+  width: auto;
 }
 
 a.btn {
@@ -73,7 +77,6 @@ a.btn {
 }
 
 .form-control {
-  border-radius: 0;
   box-shadow: none !important;
   outline: 0 !important;
 }
@@ -96,7 +99,7 @@ a.btn {
 }
 
 .form-group>label {
-  margin-bottom: 0;
+  margin-bottom: 3px;
 }
 
 .page-header {
@@ -135,4 +138,21 @@ a.btn {
 .pagination .page-item.active .page-link {
   background: $light-blue;
   color: $white;
+}
+
+.modal-content {
+  border-radius: 0;
+}
+
+.alert {
+  border-radius: 0;
+}
+
+.show-per-page {
+  width: 55px;
+  padding: 0.375rem 0.3rem;
+  padding-right: 0;
+  margin-bottom: 15px;
+  cursor: pointer;
+  font-size: 14px;
 }

@@ -24,6 +24,7 @@ export class UrlService {
       'chartdata': 'chart-data',
       'alldailyfunds': 'all-daily-funds',
       'allfunds': 'all-funds',
+      'updatefund': 'update-fund',
     };
   }
 

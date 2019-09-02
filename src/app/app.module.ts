@@ -10,7 +10,7 @@ import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BsDatepickerModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -57,6 +57,8 @@ import {
         BrowserAnimationsModule,
         NgHttpLoaderModule.forRoot(),
         BsDatepickerModule.forRoot(),
+        ModalModule.forRoot(),
+        TooltipModule.forRoot(),
     ],
     providers: [
         AuthService,
