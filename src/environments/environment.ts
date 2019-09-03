@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api : "http://ammetlife.atwebpages.com/api"
+  api : "http://am.screaminteractive.com.my/ammetlife/api"
 };
 
 /*
