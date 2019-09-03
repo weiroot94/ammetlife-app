@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api : "http://localhost:8000/api"
+  api : "http://equalised-directory.000webhostapp.com/ammetlife-api/api"
 };
 
 /*
