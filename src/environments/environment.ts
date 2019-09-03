@@ -4,11 +4,7 @@
 
 export const environment = {
   production: false,
-<<<<<<< HEAD
-  api : "http://equalised-directory.000webhostapp.com/ammetlife-api/api"
-=======
   api : "http://am.screaminteractive.com.my/ammetlife/api"
->>>>>>> 7eb7e9283d781716b2447f67f7d6a6333f89f7e7
 };
 
 /*
