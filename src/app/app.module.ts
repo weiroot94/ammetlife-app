@@ -28,7 +28,8 @@ import {
     DashboardComponent,
     UploadComponent,
     FundsComponent,
-    DailyfundsComponent
+    DailyfundsComponent,
+    EditProfileComponent
 } from './views';
 
 @NgModule({
@@ -42,7 +43,8 @@ import {
         DashboardComponent,
         UploadComponent,
         FundsComponent,
-        DailyfundsComponent
+        DailyfundsComponent,
+        EditProfileComponent
     ],
     imports: [
         BrowserModule,

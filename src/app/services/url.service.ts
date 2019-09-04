@@ -17,6 +17,7 @@ export class UrlService {
         this.urls = {
             'login': 'auth/login',
             'user': 'auth/user',
+            'updateuser': 'auth/update',
             'upload': 'upload-funds',
             'dailyfunds': 'daily-funds',
             'fundslist': 'funds-list',
@@ -26,6 +27,7 @@ export class UrlService {
             'allfunds': 'all-funds',
             'updatefund': 'update-fund',
             'statuschange': 'update-status',
+            
         };
     }
 

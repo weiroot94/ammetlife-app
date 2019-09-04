@@ -39,17 +39,12 @@ h4 {
   text-align: center;
 }
 
-button.btn {
-  width: 120px;
-  max-width: 100%;
-}
-
-button.btn.btn-auto {
-  width: auto;
-}
-
 a.btn {
   cursor: pointer;
+}
+
+span.required {
+  color: #dc3545;
 }
 
 .btn-primary,
@@ -141,10 +136,6 @@ a.btn {
 }
 
 .modal-content {
-  border-radius: 0;
-}
-
-.alert {
   border-radius: 0;
 }
 

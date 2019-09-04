@@ -17,7 +17,11 @@ export class AppComponent {
             if (event instanceof NavigationStart) {
                 if (this.auth.isLoggedIn()) {
                     if (event.url.indexOf('/dashboard') >= 0) {
-                        this.auth.AuthUser().subscribe();
+                        this.auth.AuthUser().subscribe(
+                            res =>{
+                                this.auth.currentUser = res.data
+                            }
+                        );
                     }
                 }
             }
