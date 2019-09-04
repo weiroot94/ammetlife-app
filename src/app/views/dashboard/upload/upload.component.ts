@@ -6,8 +6,7 @@ import * as moment from 'moment';
 
 @Component({
     selector: 'app-upload',
-    templateUrl: './upload.component.html',
-    styleUrls: ['./upload.component.scss']
+    templateUrl: './upload.component.html'
 })
 export class UploadComponent {
 
@@ -21,15 +20,15 @@ export class UploadComponent {
     @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
     constructor(
-        private fb: FormBuilder,
-        private _dash: DashboardService
+        private FB: FormBuilder,
+        private DS: DashboardService
     ) {
         this.step = 1;
         this.createForm();
     }
 
     createForm() {
-        this.form = this.fb.group({
+        this.form = this.FB.group({
             file: ['', Validators.required]
         });
     }
@@ -72,14 +71,13 @@ export class UploadComponent {
         const formModel = this.prepareSave();
         this.loading = true;
         this.error = null;
-        this._dash.uploaFunds(formModel)
+        this.DS.uploaFunds(formModel)
             .pipe(
                 finalize(
                     () => {
                         this.loading = false;
                     }
                 ),
-                map((res) => res.data),
                 map((data) => {
                     if (this.step == 1) {
                         return data.map((f: any) => {

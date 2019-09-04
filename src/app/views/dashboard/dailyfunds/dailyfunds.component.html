@@ -6,7 +6,7 @@
                 <hr />
                 <div class="daily-funds-table">
 
-                     <div class="filter-group">
+                    <div class="filter-group">
                         <div class="row">
                             <div class="col-xs-12 col-sm-3  form-group">
                                 <select class="form-control" [formControl]="fundType">
@@ -42,8 +42,8 @@
                                 <td class="text-center">{{ fund.as_at }}</td>
                                 <td class="text-center">{{ fund.status }}</td>
                                 <td class="text-center align-middle" [attr.rowspan]="getRowSpan(fund.as_at)" *ngIf="f || (!f && funds[i -1].as_at != fund.as_at )">
-                                    <a href="#" *ngIf="fund.status.toLowerCase == 'pending'">Approve</a>
-                                    <a href="#" *ngIf="fund.status.toLowerCase != 'pending'">Unapprove</a>
+                                    <a href="#" *ngIf="fund.status.toLowerCase() != 'approved'" [swal]="{ title: 'Approve?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Go Ahead!', confirmButtonColor: '#28a745', cancelButtonColor: '#dc3545',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 1)">Approve</a>
+                                    <a href="#" *ngIf="fund.status.toLowerCase() == 'approved'" [swal]="{ title: 'Unapprove?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Go Ahead!', confirmButtonColor: '#28a745', cancelButtonColor: '#dc3545',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 0)">Unapprove</a>
                                 </td>
                             </tr>
                             <tr *ngIf="funds && !funds.length && !loading">

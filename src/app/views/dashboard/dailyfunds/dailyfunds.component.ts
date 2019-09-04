@@ -80,7 +80,7 @@ export class DailyfundsComponent implements OnInit {
         };
 
         this.loading = true;
-        
+
         this.FS.getAllDailyFunds(params)
             .pipe(
                 finalize(() => {
@@ -130,5 +130,18 @@ export class DailyfundsComponent implements OnInit {
 
     getRowSpan(date: string) {
         return this.funds.filter((obj: any) => obj.as_at === date).length;
+    }
+
+    statusChange(date: any, status: number) {
+        date = moment.utc(date, 'DD MMM YYYY').format('YYYY-MM-DD');
+        this.FS.statusChange(date, status)
+            .subscribe(
+                () => {
+                    this.getPage(this.page);
+                },
+                err => {
+                    console.log(err);
+                }
+            )
     }
 }

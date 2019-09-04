@@ -205,4 +205,19 @@ export class FundsService {
                 catchError(this.handleErrorObservable)
             );
     }
+
+    /**
+     * Change status for approve and unapprove
+     * 
+     * @param date 
+     * @param status 
+     */
+    statusChange(date: any, status: number) {
+        return this.http
+            .post(this.url.get('statuschange'), { date: date, status: status })
+            .pipe(
+                map((res: any) => res = res.data),
+                catchError(this.handleErrorObservable)
+            );
+    }
 }      

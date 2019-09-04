@@ -13,7 +13,7 @@ export class AppComponent {
 
     constructor(private router: Router, private auth: AuthService) {
 
-        router.events.subscribe((event: any) => {
+        this.router.events.subscribe((event: any) => {
             if (event instanceof NavigationStart) {
                 if (this.auth.isLoggedIn()) {
                     if (event.url.indexOf('/dashboard') >= 0) {
