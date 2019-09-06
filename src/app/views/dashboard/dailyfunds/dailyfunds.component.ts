@@ -17,10 +17,9 @@ export class DailyfundsComponent implements OnInit {
     total: number;
 
     perPage = new FormControl(15);
-    fundType = new FormControl('');
+    status = new FormControl('');
     date = new FormControl('');
 
-    fundLists: any;
     funds: any;
 
     // Datepicker Variables
@@ -52,21 +51,6 @@ export class DailyfundsComponent implements OnInit {
     }
 
     /**
-    * Loads all funds list into dropdown
-    */
-    loadFundsList() {
-        this.FS.getFundList()
-            .subscribe(
-                res => {
-                    this.fundLists = res;
-                },
-                error => {
-                    console.log(error);
-                }
-            );
-    }
-
-    /**
      * Loads current page data
      * 
      * @param page 
@@ -76,7 +60,7 @@ export class DailyfundsComponent implements OnInit {
         var params = {
             offset: page - 1,
             per_page: this.perPage.value,
-            fund: this.fundType.value == '' ? '' : parseInt(this.fundType.value),
+            status: this.status.value == '' ? '' : this.status.value.toString(),
             date: date == '' || date == null ? '' : moment(date).format('YYYY-MM-DD'),
         };
 
@@ -105,14 +89,8 @@ export class DailyfundsComponent implements OnInit {
      */
     onChange() {
         this.date.valueChanges.subscribe(() => this.getPage(1));
-        this.fundType.valueChanges.subscribe(() => this.getPage(1));
+        this.status.valueChanges.subscribe(() => this.getPage(1));
         this.perPage.valueChanges.subscribe(() => this.getPage(this.page));
-
-        this.date.valueChanges.subscribe(() => {
-            console.log( this.date.value)
-            console.log( moment(this.date.value).format('YYYY-MM-DD'))
-            console.log( moment(this.date.value).format('YYYY-MM-DD'))
-        });
     }
 
     /**
@@ -129,16 +107,26 @@ export class DailyfundsComponent implements OnInit {
      * OnInit callback
      */
     ngOnInit() {
-        this.loadFundsList();
         this.setDatepickerConfig();
         this.getPage(1);
         this.onChange();
     }
 
+    /**
+     * Returns rowspan
+     * 
+     * @param date 
+     */
     getRowSpan(date: string) {
         return this.funds.filter((obj: any) => obj.as_at === date).length;
     }
 
+    /**
+     * Status change callback
+     * 
+     * @param date 
+     * @param status 
+     */
     statusChange(date: any, status: number) {
         date = moment(date, 'DD MMM YYYY').format('YYYY-MM-DD');
         this.FS.statusChange(date, status)

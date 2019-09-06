@@ -20,8 +20,6 @@ import { JwtInterceptor, AuthGuard, ErrorInterceptor } from './helpers';
 import { AuthService, UrlService, DashboardService } from './services';
 
 import {
-    HeaderComponent,
-    FooterComponent,
     FundsDetailsComponent,
     HomeComponent,
     LoginComponent,
@@ -35,8 +33,6 @@ import {
 @NgModule({
     declarations: [
         AppComponent,
-        HeaderComponent,
-        FooterComponent,
         HomeComponent,
         FundsDetailsComponent,
         LoginComponent,

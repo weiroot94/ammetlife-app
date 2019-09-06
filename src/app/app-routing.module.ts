@@ -13,7 +13,6 @@ import {
     EditProfileComponent
 } from './views';
 
-
 const routes: Routes = [
     {
         path: '',
