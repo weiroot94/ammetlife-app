@@ -84,7 +84,7 @@ export class UploadComponent {
                             return {
                                 name: f.name,
                                 price: f.price,
-                                date: moment.utc(f.date).format('DD MMM YYYY')
+                                date: moment(f.date).format('DD MMM YYYY')
                             };
                         });
                     } else {

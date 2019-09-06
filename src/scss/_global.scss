@@ -147,3 +147,11 @@ span.required {
   cursor: pointer;
   font-size: 14px;
 }
+
+.btn-xs,
+.btn-group-xs>.btn {
+  padding: 0.05rem 0.6rem;
+  font-size: 0.675rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+}

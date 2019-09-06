@@ -37,7 +37,7 @@ export class FundsService {
                 map((res: any) => res = res.data),
                 map((res: any) => {
                     return {
-                        date: moment.utc(res.date).format('DD MMM YYYY'),
+                        date: moment(res.date).format('DD MMM YYYY'),
                         funds: res.funds.map((data: any) => {
                             return {
                                 id: data.fund_id,
@@ -63,10 +63,10 @@ export class FundsService {
                 map((res: any) => {
                     return {
                         description: res.description,
-                        as_at: moment.utc(res.as_at).format('DD MMM YYYY'),
+                        as_at: moment(res.as_at).format('DD MMM YYYY'),
                         price: res.price.toFixed(4),
                         price_change: res.price_change > 0 ? '+' + res.price_change.toFixed(4) : res.price_change.toFixed(4),
-                        map: res.map.map((map: any) => [moment.utc(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))]),
+                        map: res.map.map((map: any) => [moment(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))]),
                     }
                 }),
                 catchError(this.handleErrorObservable)
@@ -106,7 +106,7 @@ export class FundsService {
                     if (res == null) {
                         return res;
                     } else {
-                        return res.map((map: any) => [moment.utc(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))]);
+                        return res.map((map: any) => [moment(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))]);
                     }
                 }),
                 catchError(this.handleErrorObservable)
@@ -127,7 +127,7 @@ export class FundsService {
                         return {
                             id: data.id,
                             name: data.name,
-                            as_at: moment.utc(data.as_at).format('DD MMM YYYY'),
+                            as_at: moment(data.as_at).format('DD MMM YYYY'),
                             price: parseFloat(data.price.toFixed(4)),
                             status: data.status
                         }

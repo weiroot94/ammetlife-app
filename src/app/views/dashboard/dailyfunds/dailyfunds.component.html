@@ -42,8 +42,8 @@
                                 <td class="text-center">{{ fund.as_at }}</td>
                                 <td class="text-center">{{ fund.status }}</td>
                                 <td class="text-center align-middle" [attr.rowspan]="getRowSpan(fund.as_at)" *ngIf="f || (!f && funds[i -1].as_at != fund.as_at )">
-                                    <a href="#" *ngIf="fund.status.toLowerCase() != 'approved'" [swal]="{ title: 'Approve?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Go Ahead!', confirmButtonColor: '#28a745', cancelButtonColor: '#dc3545',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 1)">Approve</a>
-                                    <a href="#" *ngIf="fund.status.toLowerCase() == 'approved'" [swal]="{ title: 'Unapprove?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Go Ahead!', confirmButtonColor: '#28a745', cancelButtonColor: '#dc3545',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 0)">Unapprove</a>
+                                    <button class="btn btn-success btn-xs" type="button" tooltip="Approve all funds from {{ fund.as_at }}" *ngIf="fund.status.toLowerCase() != 'approved'" [swal]="{ title: 'Approve?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Go Ahead!', confirmButtonColor: '#28a745', cancelButtonColor: '#dc3545',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 1)"><i class="ion-md-checkmark"></i> Approve</button>
+                                    <button class="btn btn-danger btn-xs" type="button" tooltip="Unapprove all funds from {{ fund.as_at }}" *ngIf="fund.status.toLowerCase() == 'approved'" [swal]="{ title: 'Unapprove?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Go Ahead!', confirmButtonColor: '#28a745', cancelButtonColor: '#dc3545',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 0)"><i class="ion-md-close"></i> Unapprove</button>
                                 </td>
                             </tr>
                             <tr *ngIf="funds && !funds.length && !loading">
@@ -63,7 +63,7 @@
                             </select>
                         </div>
                         <div class="float-right">
-                            <pagination-template maxSize="5" id="dailyfunds" #p="paginationApi" (pageChange)="getPage($event)">
+                            <pagination-template maxSize="7" id="dailyfunds" #p="paginationApi" (pageChange)="getPage($event)">
                                 <ul class="pagination justify-content-end">
                                     <li class="pagination-prev page-item" [class.disabled]="p.isFirstPage()">
                                         <a class="page-link" (click)="p.previous()" tabindex="p.getCurrent() - 1">&larr;</a>

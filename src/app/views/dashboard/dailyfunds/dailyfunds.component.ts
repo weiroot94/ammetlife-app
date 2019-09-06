@@ -44,6 +44,7 @@ export class DailyfundsComponent implements OnInit {
                 containerClass: 'theme-dark-blue datepicker-container-wrap',
                 showWeekNumbers: false,
                 dateInputFormat: 'DD MMM YYYY',
+                dateOutputFormat: 'YYYY-MM-DD',
                 isAnimated: true,
                 adaptivePosition: true,
             }
@@ -76,7 +77,7 @@ export class DailyfundsComponent implements OnInit {
             offset: page - 1,
             per_page: this.perPage.value,
             fund: this.fundType.value == '' ? '' : parseInt(this.fundType.value),
-            date: date == '' || date == null ? '' : moment.utc(date).format('YYYY-MM-DD'),
+            date: date == '' || date == null ? '' : moment(date).format('YYYY-MM-DD'),
         };
 
         this.loading = true;
@@ -106,6 +107,12 @@ export class DailyfundsComponent implements OnInit {
         this.date.valueChanges.subscribe(() => this.getPage(1));
         this.fundType.valueChanges.subscribe(() => this.getPage(1));
         this.perPage.valueChanges.subscribe(() => this.getPage(this.page));
+
+        this.date.valueChanges.subscribe(() => {
+            console.log( this.date.value)
+            console.log( moment(this.date.value).format('YYYY-MM-DD'))
+            console.log( moment(this.date.value).format('YYYY-MM-DD'))
+        });
     }
 
     /**
@@ -133,7 +140,7 @@ export class DailyfundsComponent implements OnInit {
     }
 
     statusChange(date: any, status: number) {
-        date = moment.utc(date, 'DD MMM YYYY').format('YYYY-MM-DD');
+        date = moment(date, 'DD MMM YYYY').format('YYYY-MM-DD');
         this.FS.statusChange(date, status)
             .subscribe(
                 () => {
