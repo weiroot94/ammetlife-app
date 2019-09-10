@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="page-header">
     <div class="container">
         <div class="row">
@@ -9,12 +10,47 @@
 </div>
 <div class="container my-5">
     <div class="row">
-        <div class="col-xs-12 col-sm-12">
-            <ul class="list-unstyled">
-                <li><a [routerLink]="['/dashboard/upload']">Upload Funds</a></li>
-                <li><a [routerLink]="['/dashboard/funds']">View Funds Lists</a></li>
-                <li><a [routerLink]="['/dashboard/dailyfunds']">View Daily Funds Lists</a></li>
-            </ul>
+        <div class="col-6 col-sm-4 col-md-2">
+            <div class="menu-card">
+                <a [routerLink]="['/dashboard/upload']">
+                    <img class="img img-responsive" src="assets/images/upload-funds.png" alt="" />
+                    <span>Upload Funds</span></a>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-md-2">
+            <div class="menu-card">
+                <a [routerLink]="['/dashboard/funds']">
+                    <img class="img img-responsive" src="assets/images/funds.png" alt="" />
+                    <span>Funds List</span></a>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-md-2">
+            <div class="menu-card">
+                <a [routerLink]="['/dashboard/dailyfunds']">
+                    <img class="img img-responsive" src="assets/images/daily-funds.png" alt="" />
+                    <span>Daily Funds List</span></a>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-md-2">
+            <div class="menu-card">
+                <a [routerLink]="['/dashboard/edit-profile']">
+                    <img class="img img-responsive" src="assets/images/edit-profile.png" alt="" />
+                    <span>Edit Profile</span></a>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-md-2">
+            <div class="menu-card">
+                <a [routerLink]="['/dashboard']">
+                    <img class="img img-responsive" src="assets/images/users.png" alt="" />
+                    <span>Add/Edit User</span></a>
+            </div>
+        </div>
+        <div class="col-6 col-sm-4 col-md-2">
+            <div class="menu-card">
+                <a [routerLink]="['/dashboard/backup']">
+                    <img class="img img-responsive" src="assets/images/storage.png" alt="" />
+                    <span>Backup</span></a>
+            </div>
         </div>
     </div>
 </div>

@@ -9,9 +9,9 @@ import {
     DashboardComponent,
     UploadComponent,
     FundsComponent,
-    DailyfundsComponent
+    DailyfundsComponent,
+    EditProfileComponent
 } from './views';
-
 
 const routes: Routes = [
     {
@@ -46,7 +46,11 @@ const routes: Routes = [
         component: DailyfundsComponent,
         canActivate: [AuthGuard]
     },
-
+    {
+        path: 'dashboard/edit-profile',
+        component: EditProfileComponent,
+        canActivate: [AuthGuard]
+    },
     {
         path: '**',
         redirectTo: '/',

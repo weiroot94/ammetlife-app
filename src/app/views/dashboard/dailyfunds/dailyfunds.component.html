@@ -1,3 +1,13 @@
+<app-header></app-header>
+<div class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <h1 class="heading-title">Daily Funds List</h1>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12">
@@ -6,15 +16,16 @@
                 <hr />
                 <div class="daily-funds-table">
 
-                     <div class="filter-group">
+                    <div class="filter-group">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-3  form-group">
-                                <select class="form-control" [formControl]="fundType">
-                                    <option value="">All Fund Type</option>
-                                    <option *ngFor="let list of fundLists" value="{{ list.id }}">{{ list.name }}</option>
+                            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 form-group">
+                                <select class="form-control" [formControl]="status">
+                                    <option value="">All Status</option>
+                                    <option value="1">Approved</option>
+                                    <option value="0">Unapproved</option>
                                 </select>
                             </div>
-                            <div class="col-xs-12 col-sm-3 form-group">
+                            <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4 form-group">
                                 <div class="input-group">
                                     <input type="text" [formControl]="date" class="form-control datepicker-form-control" value="" autoload="false" readonly="true" autocomplete="false" placeholder="Select Date" bsDatepicker [bsConfig]="datepickerConfig" />
                                     <div class="input-group-append">
@@ -40,10 +51,13 @@
                                 <td>{{ fund.name }}</td>
                                 <td class="text-center">{{ fund.price }}</td>
                                 <td class="text-center">{{ fund.as_at }}</td>
-                                <td class="text-center">{{ fund.status }}</td>
+                                <td class="text-center">
+                                    <span class="badge badge-success" *ngIf="fund.status == 1">Approved</span>
+                                    <span class="badge badge-danger" *ngIf="fund.status != 1">Unpproved</span>
+                                </td>
                                 <td class="text-center align-middle" [attr.rowspan]="getRowSpan(fund.as_at)" *ngIf="f || (!f && funds[i -1].as_at != fund.as_at )">
-                                    <a href="#" *ngIf="fund.status.toLowerCase == 'pending'">Approve</a>
-                                    <a href="#" *ngIf="fund.status.toLowerCase != 'pending'">Unapprove</a>
+                                    <button class="btn btn-success badge" type="button" tooltip="Approve all funds from {{ fund.as_at }}" *ngIf="fund.status != 1" [swal]="{ title: 'Approve?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Yes, Please', cancelButtonText: 'No, Cancel',confirmButtonColor: '#7cdd77', cancelButtonColor: '#ff8181',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 1)"><i class="ion-md-checkmark"></i> Approve</button>
+                                    <button class="btn btn-danger badge" type="button" tooltip="Unapprove all funds from {{ fund.as_at }}" *ngIf="fund.status == 1" [swal]="{ title: 'Unapprove?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Yes, Please',  cancelButtonText: 'No, Cancel', confirmButtonColor: '#7cdd77', cancelButtonColor: '#ff8181',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 0)"><i class="ion-md-close"></i> Unapprove</button>
                                 </td>
                             </tr>
                             <tr *ngIf="funds && !funds.length && !loading">
@@ -63,7 +77,7 @@
                             </select>
                         </div>
                         <div class="float-right">
-                            <pagination-template maxSize="5" id="dailyfunds" #p="paginationApi" (pageChange)="getPage($event)">
+                            <pagination-template maxSize="7" id="dailyfunds" #p="paginationApi" (pageChange)="getPage($event)">
                                 <ul class="pagination justify-content-end">
                                     <li class="pagination-prev page-item" [class.disabled]="p.isFirstPage()">
                                         <a class="page-link" (click)="p.previous()" tabindex="p.getCurrent() - 1">&larr;</a>

@@ -77,7 +77,7 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
      */
     convertToDate(date: any) {
         if (date == null) return '';
-        return moment.utc(date).format('YYYY-MM-DD');
+        return moment(date).format('YYYY-MM-DD');
     }
 
     /* ====================*/
@@ -110,6 +110,7 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
     onFundDropDownChange(value: any) {
         this.router.navigate(['/details', value]);
         this.filterForm.reset();
+        this.fundID = value;
         this.loadFundDetails();
     }
     //Ends here
@@ -130,16 +131,13 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                 enabled: false
             },
             title: {
-                text: 'Change Chart Title Later',
+                text: '',
                 style: {
                     color: "#FFFFFF",
                 }
             },
             subtitle: {
-                text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in',
-                style: {
-                    color: "#FFFFFF",
-                }
+                text: ''
             },
             chart: {
                 zoomType: 'x',

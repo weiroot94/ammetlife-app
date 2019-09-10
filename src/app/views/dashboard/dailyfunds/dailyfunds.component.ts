@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-import { FundsService } from 'src/app/services';
+import { DashboardService } from 'src/app/services';
 import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
@@ -17,10 +17,9 @@ export class DailyfundsComponent implements OnInit {
     total: number;
 
     perPage = new FormControl(15);
-    fundType = new FormControl('');
+    status = new FormControl('');
     date = new FormControl('');
 
-    fundLists: any;
     funds: any;
 
     // Datepicker Variables
@@ -31,9 +30,9 @@ export class DailyfundsComponent implements OnInit {
      * Class constructor
      * 
      * @param router
-     * @param FS 
+     * @param DS 
      */
-    constructor(private router: Router, private FS: FundsService) { }
+    constructor(private router: Router, private DS: DashboardService) { }
 
     /**
      * Sets datepicker config
@@ -44,25 +43,11 @@ export class DailyfundsComponent implements OnInit {
                 containerClass: 'theme-dark-blue datepicker-container-wrap',
                 showWeekNumbers: false,
                 dateInputFormat: 'DD MMM YYYY',
+                dateOutputFormat: 'YYYY-MM-DD',
                 isAnimated: true,
                 adaptivePosition: true,
             }
         );
-    }
-
-    /**
-    * Loads all funds list into dropdown
-    */
-    loadFundsList() {
-        this.FS.getFundList()
-            .subscribe(
-                res => {
-                    this.fundLists = res;
-                },
-                error => {
-                    console.log(error);
-                }
-            );
     }
 
     /**
@@ -75,20 +60,20 @@ export class DailyfundsComponent implements OnInit {
         var params = {
             offset: page - 1,
             per_page: this.perPage.value,
-            fund: this.fundType.value == '' ? '' : parseInt(this.fundType.value),
-            date: date == '' || date == null ? '' : moment.utc(date).format('YYYY-MM-DD'),
+            status: this.status.value == '' ? '' : this.status.value.toString(),
+            date: date == '' || date == null ? '' : moment(date).format('YYYY-MM-DD'),
         };
 
         this.loading = true;
-        
-        this.FS.getAllDailyFunds(params)
+
+        this.DS.getAllDailyFunds(params)
             .pipe(
                 finalize(() => {
                     this.loading = false;
                 })
             )
             .subscribe(
-                res => {
+                (res: any) => {
                     this.funds = res.items;
                     this.total = res.total;
                     this.page = page;
@@ -104,7 +89,7 @@ export class DailyfundsComponent implements OnInit {
      */
     onChange() {
         this.date.valueChanges.subscribe(() => this.getPage(1));
-        this.fundType.valueChanges.subscribe(() => this.getPage(1));
+        this.status.valueChanges.subscribe(() => this.getPage(1));
         this.perPage.valueChanges.subscribe(() => this.getPage(this.page));
     }
 
@@ -122,13 +107,36 @@ export class DailyfundsComponent implements OnInit {
      * OnInit callback
      */
     ngOnInit() {
-        this.loadFundsList();
         this.setDatepickerConfig();
         this.getPage(1);
         this.onChange();
     }
 
+    /**
+     * Returns rowspan
+     * 
+     * @param date 
+     */
     getRowSpan(date: string) {
         return this.funds.filter((obj: any) => obj.as_at === date).length;
+    }
+
+    /**
+     * Status change callback
+     * 
+     * @param date 
+     * @param status 
+     */
+    statusChange(date: any, status: number) {
+        date = moment(date, 'DD MMM YYYY').format('YYYY-MM-DD');
+        this.DS.statusChange(date, status)
+            .subscribe(
+                () => {
+                    this.getPage(this.page);
+                },
+                (err: any) => {
+                    console.log(err);
+                }
+            );
     }
 }
