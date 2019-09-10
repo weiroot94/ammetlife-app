@@ -1,14 +1,24 @@
+<app-header></app-header>
+<div class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <h1 class="heading-title">Funds List</h1>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="main-content">
-                <h4>All Fund Types</h4>
                 <div class="fund-types-table">
                     <table class="table table-bordered">
                         <thead>
                             <tr class="light-blue-bg white-text">
                                 <th>Fund Name</th>
                                 <th>Description</th>
+                                <th class="text-center">Status</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
@@ -16,7 +26,13 @@
                             <tr *ngFor="let fund of funds | paginate: { id: 'fundtypes', itemsPerPage: perPage, currentPage: page, totalItems: total }">
                                 <td>{{ fund.name }}</td>
                                 <td><span tooltip="{{ fund.description }}">{{ fund.short_desc }}</span></td>
-                                <td class="text-center"><a href="#" (click)="fundEdit( $event, fund, template )">Edit Details</a></td>
+                                <td class="text-center">
+                                    <span class="badge badge-success" *ngIf="fund.status == 1">Active</span>
+                                    <span class="badge badge-danger" *ngIf="fund.status != 1">Inactive</span>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-secondary badge" type="button" (click)="fundEdit( $event, fund, template )">Edit Details</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -67,6 +83,12 @@
                     <div class="form-group">
                         <label for="description" class="font-weight-bold">Description</label>
                         <textarea formControlName="description" class="form-control" rows="5"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" value="1" class="custom-control-input" id="status" formControlName="status">
+                            <label class="custom-control-label" for="status">Enable/Disable</label>
+                        </div>
                     </div>
                     <div *ngIf="error" class="alert alert-danger mb-0">{{ error }}</div>
                     <div *ngIf="success" class="alert alert-success mb-0">Fund updated successfully.</div>

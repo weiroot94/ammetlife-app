@@ -1,3 +1,13 @@
+<app-header></app-header>
+<div class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <h1 class="heading-title">Daily Funds List</h1>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12">
@@ -41,10 +51,13 @@
                                 <td>{{ fund.name }}</td>
                                 <td class="text-center">{{ fund.price }}</td>
                                 <td class="text-center">{{ fund.as_at }}</td>
-                                <td class="text-center">{{ fund.status }}</td>
+                                <td class="text-center">
+                                    <span class="badge badge-success" *ngIf="fund.status == 1">Approved</span>
+                                    <span class="badge badge-danger" *ngIf="fund.status != 1">Unpproved</span>
+                                </td>
                                 <td class="text-center align-middle" [attr.rowspan]="getRowSpan(fund.as_at)" *ngIf="f || (!f && funds[i -1].as_at != fund.as_at )">
-                                    <button class="btn btn-success btn-xs" type="button" tooltip="Approve all funds from {{ fund.as_at }}" *ngIf="fund.status.toLowerCase() != 'approved'" [swal]="{ title: 'Approve?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Go Ahead!', confirmButtonColor: '#28a745', cancelButtonColor: '#dc3545',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 1)"><i class="ion-md-checkmark"></i> Approve</button>
-                                    <button class="btn btn-danger btn-xs" type="button" tooltip="Unapprove all funds from {{ fund.as_at }}" *ngIf="fund.status.toLowerCase() == 'approved'" [swal]="{ title: 'Unapprove?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Go Ahead!', confirmButtonColor: '#28a745', cancelButtonColor: '#dc3545',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 0)"><i class="ion-md-close"></i> Unapprove</button>
+                                    <button class="btn btn-success badge" type="button" tooltip="Approve all funds from {{ fund.as_at }}" *ngIf="fund.status != 1" [swal]="{ title: 'Approve?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Yes, Please', cancelButtonText: 'No, Cancel',confirmButtonColor: '#7cdd77', cancelButtonColor: '#ff8181',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 1)"><i class="ion-md-checkmark"></i> Approve</button>
+                                    <button class="btn btn-danger badge" type="button" tooltip="Unapprove all funds from {{ fund.as_at }}" *ngIf="fund.status == 1" [swal]="{ title: 'Unapprove?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Yes, Please',  cancelButtonText: 'No, Cancel', confirmButtonColor: '#7cdd77', cancelButtonColor: '#ff8181',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 0)"><i class="ion-md-close"></i> Unapprove</button>
                                 </td>
                             </tr>
                             <tr *ngIf="funds && !funds.length && !loading">

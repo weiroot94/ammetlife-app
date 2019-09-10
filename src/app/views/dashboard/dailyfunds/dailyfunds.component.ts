@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-import { FundsService } from 'src/app/services';
+import { DashboardService } from 'src/app/services';
 import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
@@ -30,9 +30,9 @@ export class DailyfundsComponent implements OnInit {
      * Class constructor
      * 
      * @param router
-     * @param FS 
+     * @param DS 
      */
-    constructor(private router: Router, private FS: FundsService) { }
+    constructor(private router: Router, private DS: DashboardService) { }
 
     /**
      * Sets datepicker config
@@ -66,14 +66,14 @@ export class DailyfundsComponent implements OnInit {
 
         this.loading = true;
 
-        this.FS.getAllDailyFunds(params)
+        this.DS.getAllDailyFunds(params)
             .pipe(
                 finalize(() => {
                     this.loading = false;
                 })
             )
             .subscribe(
-                res => {
+                (res: any) => {
                     this.funds = res.items;
                     this.total = res.total;
                     this.page = page;
@@ -129,14 +129,14 @@ export class DailyfundsComponent implements OnInit {
      */
     statusChange(date: any, status: number) {
         date = moment(date, 'DD MMM YYYY').format('YYYY-MM-DD');
-        this.FS.statusChange(date, status)
+        this.DS.statusChange(date, status)
             .subscribe(
                 () => {
                     this.getPage(this.page);
                 },
-                err => {
+                (err: any) => {
                     console.log(err);
                 }
-            )
+            );
     }
 }

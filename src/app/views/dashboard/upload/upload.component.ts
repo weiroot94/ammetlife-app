@@ -19,10 +19,7 @@ export class UploadComponent {
 
     @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
-    constructor(
-        private FB: FormBuilder,
-        private DS: DashboardService
-    ) {
+    constructor(private FB: FormBuilder, private DS: DashboardService) {
         this.step = 1;
         this.createForm();
     }
@@ -71,7 +68,7 @@ export class UploadComponent {
         const formModel = this.prepareSave();
         this.loading = true;
         this.error = null;
-        this.DS.uploaFunds(formModel)
+        this.DS.uploadFunds(formModel)
             .pipe(
                 finalize(
                     () => {

@@ -12,11 +12,13 @@ import { UrlService } from './url.service';
 })
 
 export class FundsService {
-
-    constructor(
-        private http: HttpClient,
-        private url: UrlService
-    ) { }
+    /**
+     * Class constructor
+     * 
+     * @param http 
+     * @param url 
+     */
+    constructor(private http: HttpClient, private url: UrlService) { }
 
     /**
      * Handles Observable error
@@ -61,12 +63,16 @@ export class FundsService {
             .pipe(
                 map((res: any) => res = res.data),
                 map((res: any) => {
-                    return {
-                        description: res.description,
-                        as_at: moment(res.as_at).format('DD MMM YYYY'),
-                        price: res.price.toFixed(4),
-                        price_change: res.price_change > 0 ? '+' + res.price_change.toFixed(4) : res.price_change.toFixed(4),
-                        map: res.map.map((map: any) => [moment(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))]),
+                    if (res) {
+                        return {
+                            description: res.description,
+                            as_at: moment(res.as_at).format('DD MMM YYYY'),
+                            price: res.price.toFixed(4),
+                            price_change: res.price_change > 0 ? '+' + res.price_change.toFixed(4) : res.price_change.toFixed(4),
+                            map: res.map.map((map: any) => [moment(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))]),
+                        }
+                    } else {
+                        return false;
                     }
                 }),
                 catchError(this.handleErrorObservable)
@@ -109,114 +115,6 @@ export class FundsService {
                         return res.map((map: any) => [moment(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))]);
                     }
                 }),
-                catchError(this.handleErrorObservable)
-            );
-    }
-
-    /**
-     * All Daily Funds calllback
-     * @param params
-     */
-    getAllDailyFunds(params: any): Observable<any> {
-        return this.http
-            .post(this.url.get('alldailyfunds'), params)
-            .pipe(
-                map((res: any) => res = res.data),
-                map((res: any) => {
-                    res.items = res.items.map((data: any) => {
-                        return {
-                            id: data.id,
-                            name: data.name,
-                            as_at: moment(data.as_at).format('DD MMM YYYY'),
-                            price: parseFloat(data.price.toFixed(4)),
-                            status: data.status
-                        }
-                    })
-                    return res;
-                }),
-                catchError(this.handleErrorObservable)
-            );
-    }
-
-    /**
-    * All Daily Funds calllback
-    * @param params
-    */
-    getAllFunds(params: any): Observable<any> {
-        return this.http
-            .post(this.url.get('allfunds'), params)
-            .pipe(
-                map((res: any) => res = res.data),
-                map((res: any) => {
-                    res.items = res.items.map((data: any) => {
-                        return {
-                            id: data.id,
-                            name: data.name,
-                            short_desc: this.shorten(data.description, 12),
-                            description: data.description,
-                        }
-                    })
-                    return res;
-                }),
-                catchError(this.handleErrorObservable)
-            );
-    }
-
-    /**
-     * Short the string by words
-     * 
-     * @param str 
-     * @param maxLen 
-     * @param separator 
-     */
-    shorten(str: string, maxLen: number, separator: any = ' ') {
-        var index = this.nthIndex(str, separator, maxLen);
-        if (index <= 0 || str.length <= 0) return str;
-        if (str.length <= index) return str;
-        return str.substr(0, index) + '...';
-    }
-
-    /**
-     * Finds nth index ot pattern
-     * 
-     * @param str 
-     * @param pat 
-     * @param n 
-     */
-    nthIndex(str: string, pat: any, n: number) {
-        var L = str.length, i = -1;
-        while (n-- && i++ < L) {
-            i = str.indexOf(pat, i);
-            if (i < 0) break;
-        }
-        return i;
-    }
-
-    /**
-     * Update fund details
-     * 
-     * @param params 
-     */
-    updateFund(params: any): Observable<any> {
-        return this.http
-            .post(this.url.get('updatefund'), params)
-            .pipe(
-                map((res: any) => res = res.data),
-                catchError(this.handleErrorObservable)
-            );
-    }
-
-    /**
-     * Change status for approve and unapprove
-     * 
-     * @param date 
-     * @param status 
-     */
-    statusChange(date: any, status: number) {
-        return this.http
-            .post(this.url.get('statuschange'), { date: date, status: status })
-            .pipe(
-                map((res: any) => res = res.data),
                 catchError(this.handleErrorObservable)
             );
     }

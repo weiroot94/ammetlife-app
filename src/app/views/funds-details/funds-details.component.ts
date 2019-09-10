@@ -110,6 +110,7 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
     onFundDropDownChange(value: any) {
         this.router.navigate(['/details', value]);
         this.filterForm.reset();
+        this.fundID = value;
         this.loadFundDetails();
     }
     //Ends here
