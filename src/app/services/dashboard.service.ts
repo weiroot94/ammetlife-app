@@ -95,6 +95,31 @@ export class DashboardService {
     }
 
     /**
+     * All Daily Funds Backup calllback
+     * @param params
+     */
+    getAllDailyFundsBackup(params: any): Observable<any> {
+        return this.http
+            .post(this.url.get('alldailyfundsbackup'), params)
+            .pipe(
+                map((res: any) => res = res.data),
+                map((res: any) => {
+                    res.items = res.items.map((data: any) => {
+                        return {
+                            id: data.id,
+                            name: data.name,
+                            as_at: moment(data.as_at).format('DD MMM YYYY'),
+                            price: parseFloat(data.price.toFixed(4)),
+                            status: data.status
+                        }
+                    })
+                    return res;
+                }),
+                catchError(this.handleErrorObservable)
+            );
+    }
+
+    /**
     * All Daily Funds calllback
     * @param params
     */

@@ -351,6 +351,7 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                         if (this.fundDetails.max_date != null) {
                             this.maxDate = new Date(this.fundDetails.max_date);
                         }
+                        
                         this.chartData = this.fundDetails.map;
                         // Set chart config options
                         this.setChartOptions();

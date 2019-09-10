@@ -30,6 +30,7 @@ import {
     EditProfileComponent
 } from './views';
 import { HeaderComponent } from './views/dashboard/header.component';
+import { BackupComponent } from './views/dashboard/backup/backup.component';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import { HeaderComponent } from './views/dashboard/header.component';
         FundsComponent,
         DailyfundsComponent,
         EditProfileComponent,
-        HeaderComponent
+        HeaderComponent,
+        BackupComponent
     ],
     imports: [
         BrowserModule,

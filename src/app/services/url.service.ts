@@ -24,10 +24,10 @@ export class UrlService {
             'fund': 'fund-details',
             'chartdata': 'chart-data',
             'alldailyfunds': 'all-daily-funds',
+            'alldailyfundsbackup': 'all-daily-funds-backup',
             'allfunds': 'all-funds',
             'updatefund': 'update-fund',
-            'statuschange': 'update-status',
-            
+            'statuschange': 'update-status'
         };
     }
 

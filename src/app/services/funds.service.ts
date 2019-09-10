@@ -65,11 +65,15 @@ export class FundsService {
                 map((res: any) => {
                     if (res) {
                         return {
+                            max_date: res.max_date,
+                            min_date: res.min_date,
+                            name: res.name,
+                            id: res.id,
                             description: res.description,
                             as_at: moment(res.as_at).format('DD MMM YYYY'),
                             price: res.price.toFixed(4),
                             price_change: res.price_change > 0 ? '+' + res.price_change.toFixed(4) : res.price_change.toFixed(4),
-                            map: res.map.map((map: any) => [moment(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))]),
+                            map: res.map.map((map: any) => [moment.utc(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))]),
                         }
                     } else {
                         return false;
@@ -112,7 +116,7 @@ export class FundsService {
                     if (res == null) {
                         return res;
                     } else {
-                        return res.map((map: any) => [moment(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))]);
+                        return res.map((map: any) => [moment.utc(map.as_at).valueOf(), parseFloat(map.price.toFixed(4))]);
                     }
                 }),
                 catchError(this.handleErrorObservable)

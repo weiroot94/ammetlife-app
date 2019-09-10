@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12">
-                <h1 class="heading-title">Daily Funds List</h1>
+                <h1 class="heading-title">Daily Funds Backup List</h1>
             </div>
         </div>
     </div>
@@ -14,26 +14,6 @@
             <div class="main-content">
                 <div class="daily-funds-table">
 
-                    <div class="filter-group">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 form-group">
-                                <select class="form-control" [formControl]="status">
-                                    <option value="">All Status</option>
-                                    <option value="1">Approved</option>
-                                    <option value="0">Unapproved</option>
-                                </select>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4 form-group">
-                                <div class="input-group">
-                                    <input type="text" [formControl]="date" class="form-control datepicker-form-control" value="" autoload="false" readonly="true" autocomplete="false" placeholder="Select Date" bsDatepicker [bsConfig]="datepickerConfig" />
-                                    <div class="input-group-append">
-                                        <button class="btn btn-secondary btn-auto" type="button" (click)="clearDate()">Clear</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <table class="table table-bordered">
                         <thead>
                             <tr class="light-blue-bg white-text text-center">
@@ -41,7 +21,6 @@
                                 <th>Price</th>
                                 <th>As At</th>
                                 <th>Status</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,10 +31,6 @@
                                 <td class="text-center">
                                     <span class="badge badge-success" *ngIf="fund.status == 1">Approved</span>
                                     <span class="badge badge-danger" *ngIf="fund.status != 1">Unpproved</span>
-                                </td>
-                                <td class="text-center align-middle" [attr.rowspan]="getRowSpan(fund.as_at)" *ngIf="f || (!f && funds[i -1].as_at != fund.as_at )">
-                                    <button class="btn btn-success badge" type="button" tooltip="Approve all funds from {{ fund.as_at }}" *ngIf="fund.status != 1" [swal]="{ title: 'Approve?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Yes, Please', cancelButtonText: 'No, Cancel',confirmButtonColor: '#7cdd77', cancelButtonColor: '#ff8181',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 1)"><i class="ion-md-checkmark"></i> Approve</button>
-                                    <button class="btn btn-danger badge" type="button" tooltip="Unapprove all funds from {{ fund.as_at }}" *ngIf="fund.status == 1" [swal]="{ title: 'Unapprove?', 'text' : 'Are you sure you want to proceed?', type: 'question', showCancelButton: true, showConfirmButton: true, confirmButtonText: 'Yes, Please',  cancelButtonText: 'No, Cancel', confirmButtonColor: '#7cdd77', cancelButtonColor: '#ff8181',  focusConfirm: false }" (confirm)="statusChange( fund.as_at, 0)"><i class="ion-md-close"></i> Unapprove</button>
                                 </td>
                             </tr>
                             <tr *ngIf="funds && !funds.length && !loading">
