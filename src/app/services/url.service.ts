@@ -20,6 +20,7 @@ export class UrlService {
             'updateuser': 'auth/update',
             'upload': 'upload-funds',
             'dailyfunds': 'daily-funds',
+            'updatedailyfund': 'update-daily-fund',
             'fundslist': 'funds-list',
             'fund': 'fund-details',
             'chartdata': 'chart-data',
@@ -27,7 +28,8 @@ export class UrlService {
             'alldailyfundsbackup': 'all-daily-funds-backup',
             'allfunds': 'all-funds',
             'updatefund': 'update-fund',
-            'statuschange': 'update-status'
+            'statuschange': 'update-status',
+            'deletedailyfund': 'delete-daily-fund'
         };
     }
 

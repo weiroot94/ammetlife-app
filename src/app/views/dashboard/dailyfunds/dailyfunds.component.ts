@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { DashboardService } from 'src/app/services';
 import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
     selector: 'app-dailyfunds',
@@ -22,6 +24,18 @@ export class DailyfundsComponent implements OnInit {
 
     funds: any;
 
+    editForm: FormGroup;
+    editFundID: number;
+    error: any = false;
+    success: boolean = false;
+    submitted: boolean = false;
+
+    modalRef: BsModalRef;
+    config = {
+        keyboard: false,
+        ignoreBackdropClick: true
+    };
+
     // Datepicker Variables
     datepickerConfig: Partial<BsDatepickerConfig>;
 
@@ -32,7 +46,12 @@ export class DailyfundsComponent implements OnInit {
      * @param router
      * @param DS 
      */
-    constructor(private router: Router, private DS: DashboardService) { }
+    constructor(
+        private router: Router, 
+        private DS: DashboardService,
+        private FB: FormBuilder,
+        private MS: BsModalService
+    ) { }
 
     /**
      * Sets datepicker config
@@ -110,6 +129,13 @@ export class DailyfundsComponent implements OnInit {
         this.setDatepickerConfig();
         this.getPage(1);
         this.onChange();
+
+        this.editForm = this.FB.group({
+            price: new FormControl('', Validators.compose([
+                Validators.required,
+                Validators.pattern('^[+-]?([0-9]{1,4}[.])?[0-9]{0,4}$')
+            ]))
+        });
     }
 
     /**
@@ -139,4 +165,74 @@ export class DailyfundsComponent implements OnInit {
                 }
             );
     }
+
+    /* get edit form controls */
+    get f() {
+        return this.editForm.controls;
+    }
+
+    /* edit daily fund details */
+    dailyFundEdit(e: any, fund: any, template: TemplateRef<any>) {
+        e.preventDefault();
+        this.error = false;
+        this.success = false;
+        this.f.price.setValue(fund.price);
+        this.editFundID = fund.id;
+        this.modalRef = this.MS.show(template, this.config);
+    }
+
+    /* form submit */
+    dailyFundUpdate() {
+        this.error = false;
+        this.success = false;
+        this.loading = true;
+        this.submitted = true;
+
+        // stop here if form is invalid
+        if (this.editForm.invalid) {
+            return;
+        }
+        
+        var formData = {
+            id: this.editFundID,
+            price: this.f.price.value
+        }
+
+        this.DS.updateDailyFund(formData)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                    this.submitted = false;
+                })
+            )
+            .subscribe(
+                () => {
+                    this.success = true;
+                    this.getPage(this.page);
+                    setTimeout(() => this.modalRef.hide(), 2000);
+                },
+                (err: any) => {
+                    this.error = err;
+                }
+            )
+    }
+
+    /**
+     * Delete Daily Fund callback
+     * 
+     * @param date 
+     */
+    deleteDailyFund(date: any) {
+        date = moment(date, 'DD MMM YYYY').format('YYYY-MM-DD');
+        this.DS.deleteDailyFund(date)
+            .subscribe(
+                () => {
+                    this.getPage(this.page);
+                },
+                (err: any) => {
+                    console.log(err);
+                }
+            );
+    }
+    
 }

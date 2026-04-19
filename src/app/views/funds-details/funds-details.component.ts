@@ -179,7 +179,12 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                 tickColor: 'rgba(255,255,255,0.2)',
             },
             tooltip: {
-                xDateFormat: '%a, %e %b %Y'
+                // xDateFormat: '%a, %e %b %Y'
+                formatter: function() {
+                    var date = moment(this.key).format("ddd, DD MMM YYYY");
+                    var price = this.y.toFixed(4);
+                    return date+"<br/>"+this.series.name+": "+price;
+                }
             },
             plotOptions: {
                 area: {

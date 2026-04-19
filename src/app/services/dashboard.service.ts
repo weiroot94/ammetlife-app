@@ -172,4 +172,33 @@ export class DashboardService {
                 catchError(this.handleErrorObservable)
             );
     }
+
+    /**
+     * Update daily fund details
+     * 
+     * @param params 
+     */
+    updateDailyFund(params: any): Observable<any> {
+        return this.http
+            .post(this.url.get('updatedailyfund'), params)
+            .pipe(
+                map((res: any) => res = res.data),
+                catchError(this.handleErrorObservable)
+            );
+    }
+
+    /**
+     * Delete fund
+     * 
+     * @param date 
+     * @param status 
+     */
+    deleteDailyFund(date: any) {
+        return this.http
+            .post(this.url.get('deletedailyfund'), { date: date })
+            .pipe(
+                map((res: any) => res = res.data),
+                catchError(this.handleErrorObservable)
+            );
+    }
 }
