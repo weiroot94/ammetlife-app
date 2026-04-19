@@ -12,10 +12,11 @@ import { UrlService } from './url.service';
 export class AuthService {
     private _secretKey = "x9$lPGl1BWdQfVLpQd@J8r*ylY#1wu9j6OpXO7tEnM";
     private simpleCrypto: any;
+    public currentUser: any = null;
 
     constructor(
         private http: HttpClient,
-        private URL: UrlService
+        private url: UrlService
     ) {
         this.simpleCrypto = new SimpleCrypto(this._secretKey);
     }
@@ -43,7 +44,7 @@ export class AuthService {
     }
 
     public login(user: any) {
-        return this.http.post<any>(this.URL.get('login'), user)
+        return this.http.post<any>(this.url.get('login'), user)
             .pipe(
                 map(
                     res => {
@@ -58,6 +59,10 @@ export class AuthService {
     }
 
     public AuthUser() {
-        return this.http.get<any>(this.URL.get('user'));
+        return this.http.get<any>(this.url.get('user'));
+    }
+
+    public update(data: any) {
+        return this.http.post(this.url.get('updateuser'), data);
     }
 }

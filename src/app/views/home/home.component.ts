@@ -12,14 +12,14 @@ export class HomeComponent implements OnInit {
     data: any = [];
     error: any;
 
-    constructor(private dfs: FundsService) { }
+    constructor(private FS: FundsService) { }
 
     ngOnInit() {
         this.loadDailyFunds();
     }
 
     loadDailyFunds() {
-        this.dfs.getDailyFunds()
+        this.FS.getDailyFunds()
             .subscribe(
                 res => {
                     this.data = res ? res : [];

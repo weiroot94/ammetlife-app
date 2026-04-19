@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ChartModule } from 'angular-highcharts';
 
 import { NgProgressModule } from '@ngx-progressbar/core';
@@ -20,29 +20,31 @@ import { JwtInterceptor, AuthGuard, ErrorInterceptor } from './helpers';
 import { AuthService, UrlService, DashboardService } from './services';
 
 import {
-    HeaderComponent,
-    FooterComponent,
     FundsDetailsComponent,
     HomeComponent,
     LoginComponent,
     DashboardComponent,
     UploadComponent,
     FundsComponent,
-    DailyfundsComponent
+    DailyfundsComponent,
+    EditProfileComponent
 } from './views';
+import { HeaderComponent } from './views/dashboard/header.component';
+import { BackupComponent } from './views/dashboard/backup/backup.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        HeaderComponent,
-        FooterComponent,
         HomeComponent,
         FundsDetailsComponent,
         LoginComponent,
         DashboardComponent,
         UploadComponent,
         FundsComponent,
-        DailyfundsComponent
+        DailyfundsComponent,
+        EditProfileComponent,
+        HeaderComponent,
+        BackupComponent
     ],
     imports: [
         BrowserModule,
@@ -59,6 +61,7 @@ import {
         BsDatepickerModule.forRoot(),
         ModalModule.forRoot(),
         TooltipModule.forRoot(),
+        SweetAlert2Module.forRoot(),
     ],
     providers: [
         AuthService,

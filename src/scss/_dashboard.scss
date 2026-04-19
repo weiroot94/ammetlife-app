@@ -35,11 +35,12 @@ $pfont: #5f6771;
   padding: 50px 0 60px;
   display: block;
   overflow: hidden;
-
+  border-radius: 0.25rem;
+  
   #msform {
     text-align: center;
     position: relative;
-    min-height: 500px;
+    min-height: 400px;
     margin: 0 auto;
     z-index: 1;
 
@@ -115,7 +116,7 @@ $pfont: #5f6771;
         }
 
         .custom-file-label {
-          border-radius: 0;
+          border-radius: 0.25rem;
           border-color: #DDD;
           text-align: left;
           box-shadow: none !important;
@@ -198,7 +199,7 @@ $pfont: #5f6771;
       background: $bc;
       color: white;
       border: 0 none;
-      border-radius: 0px;
+      border-radius: 0.25rem;
       cursor: pointer;
       border: 1px solid $bc;
       margin: 0 5px;
@@ -235,4 +236,24 @@ $pfont: #5f6771;
       }
     }
   }
+}
+
+.menu-card {
+  display: block;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.menu-card img {
+  display: block;
+  width: 60px;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.menu-card span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 10px 0;
 }

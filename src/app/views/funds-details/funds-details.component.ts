@@ -77,7 +77,7 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
      */
     convertToDate(date: any) {
         if (date == null) return '';
-        return moment.utc(date).format('YYYY-MM-DD');
+        return moment(date).format('YYYY-MM-DD');
     }
 
     /* ====================*/
@@ -110,6 +110,7 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
     onFundDropDownChange(value: any) {
         this.router.navigate(['/details', value]);
         this.filterForm.reset();
+        this.fundID = value;
         this.loadFundDetails();
     }
     //Ends here
@@ -130,16 +131,13 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                 enabled: false
             },
             title: {
-                text: 'Change Chart Title Later',
+                text: '',
                 style: {
                     color: "#FFFFFF",
                 }
             },
             subtitle: {
-                text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in',
-                style: {
-                    color: "#FFFFFF",
-                }
+                text: ''
             },
             chart: {
                 zoomType: 'x',
@@ -181,7 +179,12 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                 tickColor: 'rgba(255,255,255,0.2)',
             },
             tooltip: {
-                xDateFormat: '%a, %e %b %Y'
+                // xDateFormat: '%a, %e %b %Y'
+                formatter: function() {
+                    var date = moment(this.key).format("ddd, DD MMM YYYY");
+                    var price = this.y.toFixed(4);
+                    return date+"<br/>"+this.series.name+": "+price;
+                }
             },
             plotOptions: {
                 area: {
@@ -353,6 +356,7 @@ export class FundsDetailsComponent implements OnInit, OnDestroy {
                         if (this.fundDetails.max_date != null) {
                             this.maxDate = new Date(this.fundDetails.max_date);
                         }
+                        
                         this.chartData = this.fundDetails.map;
                         // Set chart config options
                         this.setChartOptions();

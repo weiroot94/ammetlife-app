@@ -1,3 +1,13 @@
+<app-header></app-header>
+<div class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <h1 class="heading-title">Upload Funds List</h1>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container my-5">
     <!-- Multi step form -->
     <section class="multi_step_form">
@@ -22,9 +32,7 @@
                         <input type="file" class="custom-file-input" id="file" (change)="onFileChange($event)" #fileInput>
                         <label class="custom-file-label" for="upload" [ngClass]="{selected:fileName}">{{ fileName }}</label>
                     </div>
-                    <button type=" submit" [disabled]="form.invalid || loading" class="next action-button">Submit File
-                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" *ngIf="loading"></span>
-                    </button>
+                    <button type="submit" [disabled]="form.invalid || loading" class="next action-button">Submit File</button>
                     <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
                 </form>
             </fieldset>
